@@ -7,6 +7,7 @@ Run this script to set up the application environment
 import os
 import sys
 import subprocess
+import json
 from pathlib import Path
 
 def run_command(cmd, description=""):

@@ -4,8 +4,9 @@ Provides REST API endpoints for podcast generation and management
 """
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile, File, Form
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from typing import List, Optional, Dict, Any
 import asyncio
@@ -15,6 +16,10 @@ import uuid
 from datetime import datetime
 import aiofiles
 from pathlib import Path
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Import our enhanced agents
 from enhanced_podcast_agents import (
@@ -27,6 +32,9 @@ app = FastAPI(
     description="AI-powered podcast generation using multi-agent systems",
     version="1.0.0"
 )
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # CORS middleware
 app.add_middleware(
@@ -93,9 +101,14 @@ async def startup_event():
         print("⚠️  Running in demo mode - some features may be limited")
         orchestrator = None
 
-@app.get("/")
+@app.get("/", response_class=HTMLResponse)
 async def root():
-    """Root endpoint with API information."""
+    """Serve the frontend application."""
+    return FileResponse("static/index.html")
+
+@app.get("/api")
+async def api_info():
+    """API information endpoint."""
     return {
         "message": "Podcast AI Agents API",
         "version": "1.0.0",
@@ -345,4 +358,4 @@ async def http_exception_handler(request, exc):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
