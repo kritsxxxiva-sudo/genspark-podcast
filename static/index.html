@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast AI Agents - Generate AI Podcasts</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🎙️ Podcast AI Agents</h1>
+                <p class="subtitle">AI-Powered Podcast Generation System</p>
+            </div>
+            <div class="api-status">
+                <span class="status-indicator" id="apiStatus"></span>
+                <span id="apiStatusText">Checking...</span>
+            </div>
+        </header>
+
+        <main>
+            <div class="grid">
+                <div class="card generator-card">
+                    <h2>Generate New Podcast</h2>
+                    <form id="podcastForm">
+                        <div class="form-group">
+                            <label for="topic">Podcast Topic *</label>
+                            <input type="text" id="topic" name="topic" placeholder="e.g., The Future of AI in Healthcare" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="duration">Duration (minutes)</label>
+                                <input type="number" id="duration" name="duration" value="15" min="5" max="60">
+                            </div>
+                            <div class="form-group">
+                                <label for="format">Format</label>
+                                <select id="format" name="format">
+                                    <option value="solo">Solo</option>
+                                    <option value="interview">Interview</option>
+                                    <option value="narrative">Narrative</option>
+                                    <option value="panel">Panel</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="tone">Tone</label>
+                                <select id="tone" name="tone">
+                                    <option value="professional">Professional</option>
+                                    <option value="casual">Casual</option>
+                                    <option value="academic">Academic</option>
+                                    <option value="entertaining">Entertaining</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="researchDepth">Research Depth</label>
+                                <select id="researchDepth" name="researchDepth">
+                                    <option value="basic">Basic</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="comprehensive" selected>Comprehensive</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="voiceType">Voice Type</label>
+                                <select id="voiceType" name="voiceType">
+                                    <option value="professional">Professional</option>
+                                    <option value="casual">Casual</option>
+                                    <option value="energetic">Energetic</option>
+                                    <option value="calm">Calm</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="ttsService">TTS Service</label>
+                                <select id="ttsService" name="ttsService">
+                                    <option value="openai">OpenAI</option>
+                                    <option value="elevenlabs">ElevenLabs</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="generateBtn">
+                            <span class="btn-text">Generate Podcast</span>
+                            <span class="btn-loader" style="display: none;">Generating...</span>
+                        </button>
+                    </form>
+
+                    <div id="generationStatus" class="status-message" style="display: none;"></div>
+                </div>
+
+                <div class="card episodes-card">
+                    <div class="card-header">
+                        <h2>Recent Episodes</h2>
+                        <button class="btn btn-secondary" id="refreshBtn">Refresh</button>
+                    </div>
+                    <div id="episodesList" class="episodes-list">
+                        <div class="loading">Loading episodes...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <h3>🤖 Multi-Agent System</h3>
+                    <p>Advanced AI agents work together to research, write, and produce your podcast.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🎵 Audio Production</h3>
+                    <p>Professional text-to-speech conversion with multiple voice options.</p>
+                </div>
+                <div class="info-card">
+                    <h3>🔍 Smart Research</h3>
+                    <p>AI-powered web research and content analysis for accurate information.</p>
+                </div>
+                <div class="info-card">
+                    <h3>✅ Quality Assured</h3>
+                    <p>Automated content review and validation for high-quality output.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by AI Agents | <a href="/docs" target="_blank">API Documentation</a></p>
+        </footer>
+    </div>
+
+    <div id="episodeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <h2 id="modalTitle">Episode Details</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
