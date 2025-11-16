@@ -28,13 +28,13 @@ class PodcastEpisode:
     description: str
     content: str
     audio_url: Optional[str] = None
-    duration: Optional[int] = None
-    topics: List[str] = None
-    guests: List[str] = None
+    duration: Optional[float] = None
+    topics: Optional[List[str]] = None
+    guests: Optional[List[str]] = None
     transcript: Optional[str] = None
     ai_model: str = "gpt-4"
     voice_model: str = "elevenlabs_monolingual_v1"
-    created_at: str = None
+    created_at: Optional[str] = None
     
     def __post_init__(self):
         if self.topics is None:
@@ -233,7 +233,7 @@ class CreativeScriptWriterAgent(EnhancedAIAgent):
 class AudioProductionAgent(EnhancedAIAgent):
     """Agent for audio production with multiple TTS options."""
     
-    def __init__(self, openai_client: AsyncOpenAI, elevenlabs_api_key: str = None):
+    def __init__(self, openai_client: AsyncOpenAI, elevenlabs_api_key: Optional[str] = None):
         super().__init__(
             name="Audio Production Agent",
             role="Audio Engineer & Producer",
@@ -243,7 +243,7 @@ class AudioProductionAgent(EnhancedAIAgent):
         )
         self.elevenlabs_api_key = elevenlabs_api_key
         
-    async def generate_audio_with_openai(self, text: str, voice: str = "alloy") -> bytes:
+    async def generate_audio_with_openai(self, text: str, voice: str = "alloy") -> Optional[bytes]:
         """Generate audio using OpenAI TTS."""
         try:
             response = await self.openai_client.audio.speech.create(
@@ -256,7 +256,7 @@ class AudioProductionAgent(EnhancedAIAgent):
             logger.error(f"OpenAI TTS error: {e}")
             return None
     
-    async def generate_audio_with_elevenlabs(self, text: str, voice_id: str = "pNInz6obpgDQGcFmaJgB") -> bytes:
+    async def generate_audio_with_elevenlabs(self, text: str, voice_id: str = "pNInz6obpgDQGcFmaJgB") -> Optional[bytes]:
         """Generate audio using ElevenLabs API."""
         if not self.elevenlabs_api_key:
             return None
@@ -311,10 +311,43 @@ class AudioProductionAgent(EnhancedAIAgent):
         else:
             return "Audio generation failed - no TTS service available"
 
+class QualityAssuranceAgent(EnhancedAIAgent):
+    """Agent for quality assurance and content review."""
+    
+    def __init__(self, openai_client: AsyncOpenAI):
+        super().__init__(
+            name="Quality Assurance Agent",
+            role="Content Quality Reviewer",
+            goal="Ensure podcast content meets quality standards and is accurate",
+            backstory="An expert editor focused on content quality, accuracy, and engagement",
+            openai_client=openai_client
+        )
+    
+    async def execute(self, task: str, context: Dict[str, Any]) -> str:
+        """Review and validate podcast content."""
+        content = context.get("content", "")
+        
+        prompt = f"""
+        Review the following podcast content for quality:
+        
+        {content}
+        
+        Please assess:
+        1. Content accuracy and factual consistency
+        2. Engagement and flow
+        3. Clarity and coherence
+        4. Grammar and style
+        5. Overall quality
+        
+        Provide a brief quality assessment and any recommendations.
+        """
+        
+        return await self.generate_content(prompt, max_tokens=1000)
+
 class EnhancedPodcastOrchestrator:
     """Enhanced orchestrator with real AI integrations."""
     
-    def __init__(self, openai_api_key: str, elevenlabs_api_key: str = None):
+    def __init__(self, openai_api_key: str, elevenlabs_api_key: Optional[str] = None):
         self.openai_client = AsyncOpenAI(api_key=openai_api_key)
         self.agents = {
             "researcher": SmartContentResearchAgent(self.openai_client),

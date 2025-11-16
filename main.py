@@ -15,6 +15,10 @@ import uuid
 from datetime import datetime
 import aiofiles
 from pathlib import Path
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # Import our enhanced agents
 from enhanced_podcast_agents import (
@@ -345,4 +349,4 @@ async def http_exception_handler(request, exc):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=5000)
