@@ -1,0 +1,13 @@
+{
+  "title": "Mock Podcast: AI Agents and Multi-Agent Systems",
+  "description": "A mock exploration of AI Agents and Multi-Agent Systems with simulated AI insights.",
+  "content_preview": "\n# Podcast Script: \"The World of AI Technology\"\n\n[INTRO MUSIC]\n\nHOST: Hello and welcome to another episode of the AI Agents Podcast! I'm your host, and today we're exploring the fascinating world of AI Technology.\n\n[SECTION 1: Introduction]\nAI Technology is transforming how we think about artificial intelligence and its applications. In this episode, we'll dive deep into what makes this technology so revolutionary.\n\n[SECTION 2: Technical Overview]\nAt its core, AI Technology involves complex algo...",
+  "topics": [
+    "AI Agents and Multi-Agent Systems"
+  ],
+  "duration": 19.6,
+  "created_at": "2025-11-16T16:54:29.670526",
+  "ai_model": "mock-gpt-4",
+  "voice_model": "mock-elevenlabs",
+  "demo_mode": true
+}
